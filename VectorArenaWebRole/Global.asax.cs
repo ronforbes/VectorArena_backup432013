@@ -17,6 +17,9 @@ namespace VectorArenaWebRole
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterOpenAuth();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            // Registrer the default hubs route: ~/signalr
+            RouteTable.Routes.MapHubs();
         }
 
         void Application_End(object sender, EventArgs e)

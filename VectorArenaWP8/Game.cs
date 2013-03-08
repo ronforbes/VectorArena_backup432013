@@ -1,18 +1,21 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using VectorArenaCore.World;
 
-namespace VectorArenaWin8
+namespace VectorArenaWP8
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
+        World world;
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
 
-        public Game1()
+        public Game()
         {
+            world = new World();
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -25,7 +28,7 @@ namespace VectorArenaWin8
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            world.Initialize();
 
             base.Initialize();
         }
@@ -58,7 +61,7 @@ namespace VectorArenaWin8
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // TODO: Add your update logic here
+            world.Update(gameTime.ElapsedGameTime);
 
             base.Update(gameTime);
         }

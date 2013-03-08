@@ -10,14 +10,14 @@ namespace VectorArenaWin8
     /// </summary>
     public sealed partial class GamePage : SwapChainBackgroundPanel
     {
-        readonly Game1 _game;
+        readonly Game _game;
 
         public GamePage(string launchArguments)
         {
             this.InitializeComponent();
 
             // Create the game.
-            _game = XamlGame<Game1>.Create(launchArguments, Window.Current.CoreWindow, this);
+            _game = XamlGame<Game>.Create(launchArguments, Window.Current.CoreWindow, this);
         }
     }
 }

@@ -5,7 +5,7 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0194062c-30b3-4daf-b3f4-ad773ab35f2b}</ProjectGuid>
+    <ProjectGuid>{0194062C-30B3-4DAF-B3F4-AD773AB35F2B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VectorArenaCore</RootNamespace>
@@ -33,10 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Bot\BotManager.cs" />
+    <Compile Include="Bullet\BulletManager.cs" />
+    <Compile Include="Ship\ShipManager.cs" />
+    <Compile Include="World\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
@@ -47,5 +47,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
 </Project>
