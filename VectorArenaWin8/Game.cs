@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using VectorArenaCore.World;
+using VectorArenaCore.Worlds;
+using VectorArenaWin8.Networking;
 
 namespace VectorArenaWin8
 {
@@ -10,12 +11,17 @@ namespace VectorArenaWin8
     public class Game : Microsoft.Xna.Framework.Game
     {
         World world;
+        User user;
+        ClientNetworkManager networkManager;
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
 
         public Game()
         {
             world = new World();
+            user = new User();
+            networkManager = new ClientNetworkManager(world, user);
+            
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -29,6 +35,7 @@ namespace VectorArenaWin8
         protected override void Initialize()
         {
             world.Initialize();
+            networkManager.Initialize();
 
             base.Initialize();
         }
@@ -62,6 +69,11 @@ namespace VectorArenaWin8
         protected override void Update(GameTime gameTime)
         {
             world.Update(gameTime.ElapsedGameTime);
+
+            if (user.Ship == null && user.ShipId != -1)
+            {
+                user.Ship = world.ShipManager.Ship(user.ShipId);
+            }
 
             base.Update(gameTime);
         }

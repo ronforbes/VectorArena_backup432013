@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using VectorArenaCore.Bot;
-using VectorArenaCore.Bullet;
-using VectorArenaCore.Ship;
+using VectorArenaCore.Bots;
+using VectorArenaCore.Bullets;
+using VectorArenaCore.Ships;
 
-namespace VectorArenaCore.World
+namespace VectorArenaCore.Worlds
 {
     /// <summary>
     /// The world in which the game takes place
@@ -16,17 +16,17 @@ namespace VectorArenaCore.World
         /// <summary>
         /// Manages ships flying around in the world
         /// </summary>
-        ShipManager shipManager;
+        public ShipManager ShipManager;
 
         /// <summary>
         /// Manages bullets flying through the world
         /// </summary>
-        BulletManager bulletManager;
+        public BulletManager BulletManager;
 
         /// <summary>
         /// Manages bots floating through the world
         /// </summary>
-        BotManager botManager;
+        public BotManager BotManager;
 
         /// <summary>
         /// Constructs the world
@@ -34,9 +34,9 @@ namespace VectorArenaCore.World
         /// <param name="networkManager"></param>
         public World()
         {
-            shipManager = new ShipManager();
-            bulletManager = new BulletManager();
-            botManager = new BotManager();
+            ShipManager = new ShipManager();
+            BulletManager = new BulletManager();
+            BotManager = new BotManager();
         }
 
         /// <summary>
@@ -44,9 +44,9 @@ namespace VectorArenaCore.World
         /// </summary>
         public void Initialize()
         {
-            shipManager.Initialize();
-            bulletManager.Initialize();
-            botManager.Initialize();
+            ShipManager.Initialize();
+            BulletManager.Initialize();
+            BotManager.Initialize();
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace VectorArenaCore.World
         /// </summary>
         public void Update(TimeSpan elapsedTime)
         {
-            shipManager.Update(elapsedTime);
-            bulletManager.Update(elapsedTime);
-            botManager.Update(elapsedTime);
+            ShipManager.Update(elapsedTime);
+            BulletManager.Update(elapsedTime);
+            BotManager.Update(elapsedTime);
         }
     }
 }

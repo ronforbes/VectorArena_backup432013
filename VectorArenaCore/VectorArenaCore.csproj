@@ -33,10 +33,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bot\BotManager.cs" />
-    <Compile Include="Bullet\BulletManager.cs" />
-    <Compile Include="Ship\ShipManager.cs" />
-    <Compile Include="World\World.cs" />
+    <Compile Include="Bots\Bot.cs" />
+    <Compile Include="Bots\BotManager.cs" />
+    <Compile Include="Bots\BotMovement.cs" />
+    <Compile Include="Bullets\Bullet.cs" />
+    <Compile Include="Bullets\BulletManager.cs" />
+    <Compile Include="Bullets\BulletMovement.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\EntityMovement.cs" />
+    <Compile Include="MathHelper\Vector2.cs" />
+    <Compile Include="Networking\PacketSerializer.cs" />
+    <Compile Include="Networking\WorldPacket.cs" />
+    <Compile Include="Ships\Ship.cs" />
+    <Compile Include="Ships\ShipHealth.cs" />
+    <Compile Include="Ships\ShipManager.cs" />
+    <Compile Include="Ships\ShipMovement.cs" />
+    <Compile Include="Worlds\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

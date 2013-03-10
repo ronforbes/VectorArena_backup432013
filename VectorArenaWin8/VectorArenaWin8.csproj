@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="Networking\ClientNetworkManager.cs" />
+    <Compile Include="Networking\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

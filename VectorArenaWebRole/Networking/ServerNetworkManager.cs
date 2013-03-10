@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Timers;
-using VectorArenaCore.World;
+using VectorArenaCore.Networking;
+using VectorArenaCore.Worlds;
 
 namespace VectorArenaWebRole.Networking
 {
@@ -17,6 +18,8 @@ namespace VectorArenaWebRole.Networking
         /// Broadcasts messages to connected clients
         /// </summary>
         IHubContext context;
+
+        PacketSerializer packetSerializer;
 
         /// <summary>
         /// World to be broadcast to connected clients
@@ -34,6 +37,7 @@ namespace VectorArenaWebRole.Networking
 
         public ServerNetworkManager(World world)
         {
+            packetSerializer = new PacketSerializer();
             this.world = world;
             context = GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
 
@@ -56,7 +60,9 @@ namespace VectorArenaWebRole.Networking
         /// </summary>
         public void Sync(object sender, ElapsedEventArgs e)
         {
-            context.Clients.All.Sync(world);
+            object[] serializedWorld = packetSerializer.Serialize(world);
+
+            context.Clients.All.Sync(serializedWorld);
         }
 
         /// <summary>

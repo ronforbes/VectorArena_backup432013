@@ -11,15 +11,15 @@ namespace VectorArenaWebRole
 {
     public class Global : HttpApplication
     {
+        Game game;
+
         void Application_Start(object sender, EventArgs e)
         {
-            // Code that runs on application startup
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
-            AuthConfig.RegisterOpenAuth();
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-
             // Registrer the default hubs route: ~/signalr
             RouteTable.Routes.MapHubs();
+
+            // Start the game
+            game = new Game();
         }
 
         void Application_End(object sender, EventArgs e)

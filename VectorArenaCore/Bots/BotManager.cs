@@ -3,16 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace VectorArenaCore.Bot
+namespace VectorArenaCore.Bots
 {
-    class BotManager
+    public class BotManager
     {
+        /// <summary>
+        /// The bots floating through the world
+        /// </summary>
+        public List<Bot> Bots;
+
+        /// <summary>
+        /// Constructs the bot manager
+        /// </summary>
+        public BotManager()
+        {
+            Bots = new List<Bot>();
+        }
+
         /// <summary>
         /// Sets bots to initial state
         /// </summary>
         public void Initialize()
         {
-
+            Bots.Clear();
         }
 
         /// <summary>

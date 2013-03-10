@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using VectorArenaCore.World;
+using VectorArenaCore.Worlds;
+using VectorArenaWP8.Networking;
 
 namespace VectorArenaWP8
 {
@@ -10,12 +11,14 @@ namespace VectorArenaWP8
     public class Game : Microsoft.Xna.Framework.Game
     {
         World world;
+        ClientNetworkManager networkManager;
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
 
         public Game()
         {
             world = new World();
+            networkManager = new ClientNetworkManager();
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -29,6 +32,7 @@ namespace VectorArenaWP8
         protected override void Initialize()
         {
             world.Initialize();
+            networkManager.Initialize();
 
             base.Initialize();
         }
