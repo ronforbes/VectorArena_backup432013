@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VectorArenaCore.Ships;
 
-namespace VectorArenaWin8.Networking
+namespace VectorArenaWP8.Networking
 {
     class User
     {
@@ -15,6 +15,7 @@ namespace VectorArenaWin8.Networking
         public User()
         {
             ShipId = -1;
+            Ship = null;
         }
     }
 }

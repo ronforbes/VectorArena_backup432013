@@ -6,42 +6,53 @@ using VectorArenaCore.Bots;
 using VectorArenaCore.Bullets;
 using VectorArenaCore.Ships;
 using VectorArenaCore.Worlds;
+using VectorArenaWebRole.Users;
 
-namespace VectorArenaCore.Networking
+namespace VectorArenaWebRole.Networking
 {
     public class PacketSerializer
     {
-        public PacketSerializer()
+        public object[] Serialize(World world, User user)
         {
-
-        }
-
-        public object[] Serialize(World world)
-        {
-            WorldPacket worldPacket = new WorldPacket();
-
             // Serialize the ships
-            foreach (Ship ship in world.ShipManager.Ships)
+            List<object> serializedShips = new List<object>();
+            
+            foreach (Ship ship in world.ShipManager.Ships.Values)
             {
                 object[] serializedShip = Serialize(ship);
-                worldPacket.Ships.Add(serializedShip);
+                serializedShips.Add(serializedShip);
             }
 
             // Serialize the bullets
-            foreach (Bullet bullet in world.BulletManager.Bullets)
+            List<object> serializedBullets = new List<object>();
+
+            lock (world.BulletManager.Bullets)
             {
-                object[] seriealizedBullet = Serialize(bullet);
-                worldPacket.Bullets.Add(seriealizedBullet);
+                List<Bullet> bullets = new List<Bullet>(world.BulletManager.Bullets);
+
+                foreach (Bullet bullet in bullets)
+                {
+                    object[] seriealizedBullet = Serialize(bullet);
+                    serializedBullets.Add(seriealizedBullet);
+                }
             }
 
             // Serialize the bots
+            List<object> serializedBots = new List<object>();
+
             foreach (Bot bot in world.BotManager.Bots)
             {
                 object[] serializedBot = Serialize(bot);
-                worldPacket.Bots.Add(serializedBot);
+                serializedBots.Add(serializedBot);
             }
 
-            object[] serializedWorld = Serialize(worldPacket);
+            // Serialize the world
+            object[] serializedWorld = new object[4];
+
+            serializedWorld[0] = serializedShips;
+            serializedWorld[1] = serializedBullets;
+            serializedWorld[2] = serializedBots;
+            serializedWorld[3] = user.LatestCommandId;
 
             return serializedWorld;
         }
@@ -90,17 +101,6 @@ namespace VectorArenaCore.Networking
             serializedBot[6] = bot.Movement.Acceleration.Y;
 
             return serializedBot;
-        }
-
-        object[] Serialize(WorldPacket worldPacket)
-        {
-            object[] serializedWorld = new object[3];
-
-            serializedWorld[0] = worldPacket.Ships;
-            serializedWorld[1] = worldPacket.Bullets;
-            serializedWorld[2] = worldPacket.Bots;
-
-            return serializedWorld;
         }
     }
 }

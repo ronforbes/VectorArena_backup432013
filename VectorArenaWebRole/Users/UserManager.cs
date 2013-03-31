@@ -4,22 +4,22 @@ using System.Linq;
 using System.Web;
 using VectorArenaCore.Ships;
 
-namespace VectorArenaWebRole.Networking
+namespace VectorArenaWebRole.Users
 {
     public class UserManager
     {
-        List<User> users;
+        public Dictionary<string, User> Users;
         ShipManager shipManager;
 
         public UserManager(ShipManager shipManager)
         {
-            users = new List<User>();
+            Users = new Dictionary<string, User>();
             this.shipManager = shipManager;
         }
 
         public void Initialize()
         {
-            users.Clear();
+            Users.Clear();
         }
 
         public int Add(string connectionId)
@@ -29,16 +29,24 @@ namespace VectorArenaWebRole.Networking
 
             newUser.Ship = newShip;
 
-            users.Add(newUser);
+            Users.Add(connectionId, newUser);
 
             return newShip.Id;
         }
 
+        public User User(string connectionId)
+        {
+            if (Users.ContainsKey(connectionId))
+            {
+                return Users[connectionId];
+            }
+            else
+                return null;
+        }
+
         public bool Remove(string connectionId)
         {
-            User userToRemove = users.Find(u => u.ConnectionId == connectionId);
-
-            bool removedUser = users.Remove(userToRemove);
+            bool removedUser = Users.Remove(connectionId);
 
             return removedUser;
         }

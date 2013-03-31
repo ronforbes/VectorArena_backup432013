@@ -8,6 +8,7 @@ namespace VectorArenaCore.Entities
     public class Entity
     {
         public int Id;
+        public EntityMovement Movement;
 
         public virtual void Update(TimeSpan elapsedTime) { }
     }

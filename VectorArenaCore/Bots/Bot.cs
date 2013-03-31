@@ -8,6 +8,9 @@ namespace VectorArenaCore.Bots
 {
     public class Bot : Entity
     {
-        public BotMovement Movement;
+        public Bot()
+        {
+            Movement = new BotMovement();
+        }
     }
 }

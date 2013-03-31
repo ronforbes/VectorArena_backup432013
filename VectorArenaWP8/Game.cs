@@ -11,6 +11,7 @@ namespace VectorArenaWP8
     public class Game : Microsoft.Xna.Framework.Game
     {
         World world;
+        User user;
         ClientNetworkManager networkManager;
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
@@ -18,7 +19,9 @@ namespace VectorArenaWP8
         public Game()
         {
             world = new World();
-            networkManager = new ClientNetworkManager();
+            user = new User();
+            networkManager = new ClientNetworkManager(world, user);
+
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }

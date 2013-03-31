@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using VectorArenaCore.Ships;
+using VectorArenaWebRole.Users;
 
 namespace VectorArenaWebRole.Networking
 {
@@ -35,6 +37,24 @@ namespace VectorArenaWebRole.Networking
         public override Task OnReconnected()
         {
             return base.OnReconnected();
+        }
+
+        public void StartAction(string action, int commandId)
+        {
+            User user = game.UserManager.User(Context.ConnectionId);
+            Ship ship = user.Ship;
+            Ship.Action shipAction = (Ship.Action)Enum.Parse(typeof(Ship.Action), action);
+            ship.Actions[shipAction] = true;
+            user.LatestCommandId = commandId;
+        }
+
+        public void StopAction(string action, int commandId)
+        {
+            User user = game.UserManager.User(Context.ConnectionId);
+            Ship ship = user.Ship;
+            Ship.Action shipAction = (Ship.Action)Enum.Parse(typeof(Ship.Action), action);
+            ship.Actions[shipAction] = false;
+            user.LatestCommandId = commandId;
         }
     }
 }

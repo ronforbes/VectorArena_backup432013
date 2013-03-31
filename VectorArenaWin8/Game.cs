@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using VectorArenaCore.Worlds;
 using VectorArenaWin8.Networking;
+using VectorArenaWin8.Users;
+using VectorArenaWin8.Worlds;
 
 namespace VectorArenaWin8
 {
@@ -13,15 +15,19 @@ namespace VectorArenaWin8
         World world;
         User user;
         ClientNetworkManager networkManager;
+        WorldView worldView;
+        UserController userController;
         GraphicsDeviceManager _graphics;
-        SpriteBatch _spriteBatch;
 
         public Game()
         {
             world = new World();
             user = new User();
             networkManager = new ClientNetworkManager(world, user);
-            
+            worldView = new WorldView(world, user);
+            userController = new UserController(user, networkManager);
+            networkManager.UserController = userController;
+
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
         }
@@ -36,6 +42,8 @@ namespace VectorArenaWin8
         {
             world.Initialize();
             networkManager.Initialize();
+            worldView.Initialize(GraphicsDevice);
+            userController.Initialize();
 
             base.Initialize();
         }
@@ -46,10 +54,8 @@ namespace VectorArenaWin8
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            // Initialize content needed to display the world
+            worldView.LoadContent(GraphicsDevice);
         }
 
         /// <summary>
@@ -58,7 +64,7 @@ namespace VectorArenaWin8
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            worldView.UnloadContent();
         }
 
         /// <summary>
@@ -75,6 +81,10 @@ namespace VectorArenaWin8
                 user.Ship = world.ShipManager.Ship(user.ShipId);
             }
 
+            worldView.Update(gameTime);
+
+            userController.Update(gameTime.ElapsedGameTime);
+
             base.Update(gameTime);
         }
 
@@ -84,9 +94,7 @@ namespace VectorArenaWin8
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
+            worldView.Draw();
 
             base.Draw(gameTime);
         }

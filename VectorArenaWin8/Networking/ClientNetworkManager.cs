@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using VectorArenaCore.Networking;
 using VectorArenaCore.Worlds;
+using VectorArenaWin8.Users;
 
 namespace VectorArenaWin8.Networking
 {
@@ -23,6 +25,11 @@ namespace VectorArenaWin8.Networking
         IHubProxy proxy;
 
         /// <summary>
+        /// Deserializes packets received from the server
+        /// </summary>
+        PacketDeserializer packetDeserializer;
+
+        /// <summary>
         /// The world that will be updated by the server
         /// </summary>
         World world;
@@ -31,6 +38,11 @@ namespace VectorArenaWin8.Networking
         /// The user that will be set by the server
         /// </summary>
         User user;
+
+        /// <summary>
+        /// The user controller to replay commands from the server
+        /// </summary>
+        public UserController UserController;
 
         bool isDisposed;
 
@@ -48,6 +60,9 @@ namespace VectorArenaWin8.Networking
 
             // Construct the proxy to the hub
             proxy = connection.CreateHubProxy("ServerHub");
+
+            // Setup the packet deserializer
+            packetDeserializer = new PacketDeserializer();
 
             // Set the world context
             this.world = world;
@@ -75,7 +90,20 @@ namespace VectorArenaWin8.Networking
 
         void Sync(dynamic world)
         {
+            WorldPacket worldPacket = packetDeserializer.Deserialize(world);
 
+            this.world.Sync(worldPacket);
+            UserController.ReplayCommands(worldPacket.LastCommandId);
+        }
+
+        public void StartAction(string action, int commandId)
+        {
+            proxy.Invoke("StartAction", action, commandId);
+        }
+
+        public void StopAction(string action, int commandId)
+        {
+            proxy.Invoke("StopAction", action, commandId);
         }
 
         /// <summary>

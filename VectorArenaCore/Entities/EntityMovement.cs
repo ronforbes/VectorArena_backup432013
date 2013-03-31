@@ -15,10 +15,12 @@ namespace VectorArenaCore.Entities
 
         public EntityMovement()
         {
-            Position = new Vector2();
-            Velocity = new Vector2();
-            Acceleration = new Vector2();
+            Position = Vector2.Zero;
+            Velocity = Vector2.Zero;
+            Acceleration = Vector2.Zero;
             Rotation = 0.0f;
         }
+
+        public virtual void Update(TimeSpan elapsedTime) { }
     }
 }

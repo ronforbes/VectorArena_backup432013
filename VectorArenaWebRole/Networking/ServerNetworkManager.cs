@@ -6,6 +6,7 @@ using System.Text;
 using System.Timers;
 using VectorArenaCore.Networking;
 using VectorArenaCore.Worlds;
+using VectorArenaWebRole.Users;
 
 namespace VectorArenaWebRole.Networking
 {
@@ -27,18 +28,24 @@ namespace VectorArenaWebRole.Networking
         World world;
 
         /// <summary>
+        /// Users to receive synchronization state
+        /// </summary>
+        UserManager userManager;
+
+        /// <summary>
         /// Maintains periodic synchronizations to clients
         /// </summary>
         Timer syncTimer;
 
         bool isDisposed;
 
-        const double syncsPerSecond = 15;
+        const double syncsPerSecond = 60;
 
-        public ServerNetworkManager(World world)
+        public ServerNetworkManager(World world, UserManager userManager)
         {
             packetSerializer = new PacketSerializer();
             this.world = world;
+            this.userManager = userManager;
             context = GlobalHost.ConnectionManager.GetHubContext<ServerHub>();
 
             // Setup the synchronization timer
@@ -60,9 +67,12 @@ namespace VectorArenaWebRole.Networking
         /// </summary>
         public void Sync(object sender, ElapsedEventArgs e)
         {
-            object[] serializedWorld = packetSerializer.Serialize(world);
+            foreach (User user in userManager.Users.Values)
+            {
+                object[] serializedWorld = packetSerializer.Serialize(world, user);
 
-            context.Clients.All.Sync(serializedWorld);
+                context.Clients.Client(user.ConnectionId).Sync(serializedWorld);
+            }
         }
 
         /// <summary>

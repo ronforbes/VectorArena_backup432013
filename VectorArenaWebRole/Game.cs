@@ -5,6 +5,7 @@ using System.Timers;
 using System.Web;
 using VectorArenaCore.Worlds;
 using VectorArenaWebRole.Networking;
+using VectorArenaWebRole.Users;
 
 namespace VectorArenaWebRole
 {
@@ -17,7 +18,7 @@ namespace VectorArenaWebRole
         Timer updateTimer;
         DateTime previousUpdateTime;
         ServerNetworkManager networkManager;
-        UserManager userManager;
+        public UserManager UserManager;
 
         const double updatesPerSecond = 60;
         readonly static Lazy<Game> instance = new Lazy<Game>(() => new Game());
@@ -40,9 +41,9 @@ namespace VectorArenaWebRole
 
             previousUpdateTime = DateTime.Now;
 
-            networkManager = new ServerNetworkManager(world);
+            UserManager = new UserManager(world.ShipManager);
 
-            userManager = new UserManager(world.ShipManager);
+            networkManager = new ServerNetworkManager(world, UserManager);
 
             Initialize();
         }
@@ -55,19 +56,19 @@ namespace VectorArenaWebRole
             world.Initialize();
             updateTimer.Start();
             networkManager.Initialize();
-            userManager.Initialize();
+            UserManager.Initialize();
         }
 
         public int AddUser(string connectionId)
         {
-            int id = userManager.Add(connectionId);
+            int id = UserManager.Add(connectionId);
 
             return id;
         }
 
         public bool RemoveUser(string connectionId)
         {
-            bool userRemoved = userManager.Remove(connectionId);
+            bool userRemoved = UserManager.Remove(connectionId);
 
             return userRemoved;
         }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using VectorArenaCore.Bots;
 using VectorArenaCore.Bullets;
+using VectorArenaCore.Networking;
 using VectorArenaCore.Ships;
 
 namespace VectorArenaCore.Worlds
@@ -29,12 +30,22 @@ namespace VectorArenaCore.Worlds
         public BotManager BotManager;
 
         /// <summary>
+        /// Width of the world
+        /// </summary>
+        public const int Width = 10000;
+
+        /// <summary>
+        /// Height of the world
+        /// </summary>
+        public const int Height = 10000;
+
+        /// <summary>
         /// Constructs the world
         /// </summary>
         /// <param name="networkManager"></param>
         public World()
         {
-            ShipManager = new ShipManager();
+            ShipManager = new ShipManager(this);
             BulletManager = new BulletManager();
             BotManager = new BotManager();
         }
@@ -57,6 +68,13 @@ namespace VectorArenaCore.Worlds
             ShipManager.Update(elapsedTime);
             BulletManager.Update(elapsedTime);
             BotManager.Update(elapsedTime);
+        }
+
+        public void Sync(WorldPacket worldPacket)
+        {
+            ShipManager.Sync(worldPacket.Ships);
+            BulletManager.Sync(worldPacket.Bullets);
+            BotManager.Sync(worldPacket.Bots);
         }
     }
 }

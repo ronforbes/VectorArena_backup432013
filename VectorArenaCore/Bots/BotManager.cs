@@ -36,5 +36,14 @@ namespace VectorArenaCore.Bots
         {
 
         }
+
+        /// <summary>
+        /// Synchronizes bots to state received from server
+        /// </summary>
+        /// <param name="bots"></param>
+        public void Sync(List<Bot> bots)
+        {
+
+        }
     }
 }
